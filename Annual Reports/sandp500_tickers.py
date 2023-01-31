@@ -12,5 +12,3 @@ def save_sp500_tickers():
         ticker = row.findAll('td')[0].text
         tickers.append(ticker[:-1])
     return tickers
-
-print(save_sp500_tickers())
