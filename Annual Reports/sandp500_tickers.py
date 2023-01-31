@@ -10,11 +10,7 @@ def save_sp500_tickers():
     tickers = []
     for row in table.findAll('tr')[1:]:
         ticker = row.findAll('td')[0].text
-        tickers.append(ticker)
-        
-    with open("sp500tickers.pickle","wb") as f:
-        pickle.dump(tickers,f)
-        
+        tickers.append(ticker[:-1])
     return tickers
 
-save_sp500_tickers()
+print(save_sp500_tickers())
