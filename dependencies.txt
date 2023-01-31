@@ -1,1 +1,3 @@
 PyMuPDF
+smjsindustry
+bs4
