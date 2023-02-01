@@ -1,6 +1,5 @@
 # A function that returns an array of the S and P 500 CIKS
 import bs4 as bs
-import pickle
 import requests
 
 def save_sp500_tickers():

@@ -2,7 +2,7 @@
 
 from sandp500_tickers import save_sp500_tickers
 from sec_api import QueryApi
-import json 
+from sec_api import ExtractorApi
 
 api_key = "b8113d497aa775cb50186f7f03c97c7e8b3158734705787264d31e7f627dc6db"
 
@@ -11,6 +11,7 @@ tickers = save_sp500_tickers()
 # Creating a new instance of the queryapi 
 
 queryapi = QueryApi(api_key)
+extractorApi = ExtractorApi(api_key)
 
 base_query = {
   "query": { 
@@ -24,74 +25,60 @@ base_query = {
   # sort returned filings by the filedAt key/value
   "sort": [{ "filedAt": { "order": "desc" } }]
 }
-# open the file we use to store the filing URLs
-log_file = open("filing_urls.txt", "a")
 
-# start with filings filed in 2022, then 2020, 2019, ... up to 1995
-# uncomment next line to fetch all filings filed from 2022-1995
-# for year in range(2021, 1994, -1):
-for year in range(2022, 2020, -1):
-  print("Starting download for year {year}".format(year=year))
-  
-  # a single search universe is represented as a month of the given year
-  for month in range(1, 13, 1):
-    # get 10-Q and 10-Q/A filings filed in year and month
-    # resulting query example: "formType:\"10-Q\" AND filedAt:[2021-01-01 TO 2021-01-31]"
+# This function writes 10k filings for ticker = ticker to ticker.txt from start_year to end_year
+
+def get_urls_for_ticker(base_query, ticker, start_year, end_year):
+  log_file = open('{}.txt'.format(ticker), 'a')
+  for year in range(end_year, start_year, -1):
+    print('Starting {year}'.format(year = year))
     universe_query = \
-        "formType:(\"10-K\", \"10-KT\", \"10KSB\", \"10KT405\", \"10KSB40\", \"10-K405\") AND " + \
-        "filedAt:[{year}-{month:02d}-01 TO {year}-{month:02d}-31]" \
-        .format(year=year, month=month)
-  
-    # set new query universe for year-month combination
+        "formType:\"10-K\" AND " + \
+        "filedAt:[{year}-01-01 TO {year}-01-31]" \
+        .format(year=year)
+    print(universe_query)
     base_query["query"]["query_string"]["query"] = universe_query
+    response = queryapi.get_filings(base_query)
+    print(response)
+    urls_list = list(map(lambda x: x["linkToFilingDetails"], response["filings"]))
+    urls_string = "\n".join(urls_list) + "\n"
+    log_file.write(urls_string)
+    print("Filing URLs downloaded for {year}-01".format(year=year))
+  log_file.close()
 
-    # paginate through results by increasing "from" parameter 
-    # until we don't find any matches anymore
-    # uncomment next line to fetch all 10,000 filings
-    # for from_batch in range(0, 9800, 200): 
-    for from_batch in range(0, 400, 200):
-      # set new "from" starting position of search 
-      base_query["from"] = from_batch;
+# Testing function
 
-      response = queryapi.get_filings(base_query)
+get_urls_for_ticker(base_query, "AAPL", 2020, 2022)
 
-      # no more filings in search universe
-      if len(response["filings"]) == 0:
-        break
+''' 
+1 - Business
+1A - Risk Factors
+1B - Unresolved Staff Comments
+2 - Properties
+3 - Legal Proceedings
+4 - Mine Safety Disclosures
+5 - Market for Registrant’s Common Equity, Related Stockholder Matters and Issuer Purchases of Equity Securities
+6 - Selected Financial Data (prior to February 2021)
+7 - Management’s Discussion and Analysis of Financial Condition and Results of Operations
+7A - Quantitative and Qualitative Disclosures about Market Risk
+8 - Financial Statements and Supplementary Data
+9 - Changes in and Disagreements with Accountants on Accounting and Financial Disclosure
+9A - Controls and Procedures
+9B - Other Information
+10 - Directors, Executive Officers and Corporate Governance
+11 - Executive Compensation
+12 - Security Ownership of Certain Beneficial Owners and Management and Related Stockholder Matters
+13 - Certain Relationships and Related Transactions, and Director Independence
+14 - Principal Accountant Fees and Services
+'''
+# Getting the clean-text of an item (see above) for the list of urls in a .txt file located at path
 
-      # for each filing, only save the URL pointing to the filing itself 
-      # and ignore all other data. 
-      # the URL is set in the dict key "linkToFilingDetails"
-      urls_list = list(map(lambda x: x["linkToFilingDetails"], response["filings"]))
-
-      # transform list of URLs into one string by joining all list elements
-      # and add a new-line character between each element.
-      urls_string = "\n".join(urls_list) + "\n"
-      
-      log_file.write(urls_string)
-
-    print("Filing URLs downloaded for {year}-{month:02d}".format(year=year, month=month))
-
-log_file.close()
-
-import os
-import multiprocessing
-
-def download_all_filings():
-  print("Start downloading all filings")
-
-  download_folder = "./filings" 
-  if not os.path.isdir(download_folder):
-    os.makedirs(download_folder)
-    
-  # uncomment next line to process all URLs
-  # urls = load_urls()
-  urls = load_urls()[1:40]
-  print("{length} filing URLs loaded".format(length=len(urls)))
-
-  number_of_processes = 20
-
-  with multiprocessing.Pool(number_of_processes) as pool:
-    pool.map(download_filing, urls)
-  
-  print("All filings downloaded")
+def get_section(path, item):
+    file = open(path, 'r')
+    lines = file.readlines()
+    output_file = open(path[:-3] + "_{item}".format(item = item))
+    for url in lines:
+      print(url)
+      section_text = extractorApi.get_section(url, item, "text")
+      output_file.write(section_text + "\n\n\n")
+    output_file.close()
