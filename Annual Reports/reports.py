@@ -5,7 +5,7 @@ from sec_api import QueryApi
 import json 
 
 def get_10k_URLS_for_particular_company(start, end,ticker):
-  api_key = "161be08b7c1b9d92a04867c50069b622edcc8716ee151ae6929c571d9e3689c3"
+  api_key = "b8113d497aa775cb50186f7f03c97c7e8b3158734705787264d31e7f627dc6db"
 
   #tickers = save_sp500_tickers()
 
@@ -17,7 +17,8 @@ def get_10k_URLS_for_particular_company(start, end,ticker):
 
   query = {
   "query": { "query_string": { 
-      "query": "ticker:AAPL AND filedAt:[2020-01-01 TO 2021-12-31] AND formType:\"10-K\"",
+      #"query": "ticker:AAPL AND filedAt:[2020-01-01 TO 2020-12-31] AND formType:\"10-K\"",
+      "query": "ticker:AAPL AND filedAt:[2021-01-01 TO 2021-12-31] AND formType:\"10-K\"",
       "time_zone": "America/New_York"
   } },
   "from": "0",
@@ -25,12 +26,13 @@ def get_10k_URLS_for_particular_company(start, end,ticker):
   "sort": [{ "filedAt": { "order": "desc" } }]
 }
 
-  response = queryApi.get_filings(query)
+  
 
   
   
 
   log_file = open("filing_urls.txt", "a")
+  
 
 # start with filings filed in 2021, then 2020, 2019, ... up to 2010 
 # uncomment line below to fetch all filings filed in 2022-2010
@@ -42,16 +44,18 @@ def get_10k_URLS_for_particular_company(start, end,ticker):
     
     # get 10-Q and 10-Q/A filings filed in year and month
     # resulting query example: "formType:\"10-Q\" AND filedAt:[2021-01-01 TO 2021-01-31]"
-    universe_query = \
-    "ticker:{ticker} AND "+ \
-    "filedAt:[{year}-01 TO {year}-31] AND" \
-    "formType:\"10-K\""
-    universe_query.format(ticker = ticker)
-    universe_query.format(year=year)
+    universe_query = "ticker:{ticker} AND ".format(ticker = ticker)+\
+    "filedAt:[{year}-01-01 TO {year}-12-31] AND ".format(year = year)+\
+    "formType:\"10-K\"" 
+    
+    
   
     print(universe_query)
     # set new query universe for year-month combination
     query["query"]["query_string"]["query"] = universe_query;
+    #print(query)
+    response = queryApi.get_filings(query)
+    #print(response)
 
     # paginate through results by increasing "from" parameter 
     # until we don't find any matches anymore
@@ -67,6 +71,7 @@ def get_10k_URLS_for_particular_company(start, end,ticker):
       # transform list of URLs into one string by joining all list elements
       # and add a new-line character between each element.
     urls_string = "\n".join(urls_list) + "\n"
+    print(urls_string)
       
     log_file.write(urls_string)
 
@@ -75,7 +80,9 @@ def get_10k_URLS_for_particular_company(start, end,ticker):
 
   log_file.close()
 
-get_10k_URLS(2022,2021,"AAPL")
+
+
+get_10k_URLS_for_particular_company(2000,1990,"AAPL")
 
 import os
 import multiprocessing
