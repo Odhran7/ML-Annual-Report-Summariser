@@ -1,4 +1,6 @@
 PyMuPDF
-smjsindustry
 bs4
 lxml
+BeautifulSoup
+fitz
+sec-api
