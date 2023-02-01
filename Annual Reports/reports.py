@@ -46,7 +46,7 @@ def get_urls_for_ticker(base_query, ticker, start_year, end_year):
     log_file.write(urls_string)
     print("Filing URLs downloaded for {year}-01".format(year=year))
   log_file.close()
-  
+
 # Testing function
 
 get_urls_for_ticker(base_query, "AAPL", 2020, 2022)
@@ -74,10 +74,10 @@ get_urls_for_ticker(base_query, "AAPL", 2020, 2022)
 '''
 # Getting the clean-text of an item (see above) for the list of urls in a .txt file located at path
 
-def get_section(path, item):
+def get_section(path, item): 
     file = open(path, 'r')
     lines = file.readlines()
-    output_file = open(path[:-3] + "_{item}".format(item = item))
+    output_file = open(path[:-3] + "_{item}.txt".format(item = item), 'a')
     for url in lines:
       print(url)
       section_text = extractorApi.get_section(url, item, "text")
