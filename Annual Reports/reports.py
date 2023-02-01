@@ -26,16 +26,17 @@ base_query = {
   "sort": [{ "filedAt": { "order": "desc" } }]
 }
 
-# This function writes 10k filings for ticker = ticker to ticker.txt from start_year to end_year
+# This function writes 10k filing urls   for ticker = ticker to ticker.txt from start_year to end_year
 
 def get_urls_for_ticker(base_query, ticker, start_year, end_year):
   log_file = open('{}.txt'.format(ticker), 'a')
   for year in range(end_year, start_year, -1):
     print('Starting {year}'.format(year = year))
     universe_query = \
+      "ticker:{ticker} AND " + \
         "formType:\"10-K\" AND " + \
         "filedAt:[{year}-01-01 TO {year}-01-31]" \
-        .format(year=year)
+        .format(ticker = ticker, year = year)
     print(universe_query)
     base_query["query"]["query_string"]["query"] = universe_query
     response = queryapi.get_filings(base_query)
@@ -45,7 +46,7 @@ def get_urls_for_ticker(base_query, ticker, start_year, end_year):
     log_file.write(urls_string)
     print("Filing URLs downloaded for {year}-01".format(year=year))
   log_file.close()
-
+  
 # Testing function
 
 get_urls_for_ticker(base_query, "AAPL", 2020, 2022)
