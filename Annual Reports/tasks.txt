@@ -1,6 +1,0 @@
-We need to change the s and p 500 ticker list to a function 
-We want to fix up the function for getting annual reports -> should be able to filter by company, start year, end year, just 10ks 
-Create a donwload function that downloads as pdfs ideally in the format ticker_year.pdf
-Run the download function on to hdd 
-
-Start thinking about ml model -> keep practicing 
