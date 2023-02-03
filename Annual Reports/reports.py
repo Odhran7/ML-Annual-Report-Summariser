@@ -53,7 +53,7 @@ def get_10k_URLS_for_particular_company(start, end,ticker):
     print(universe_query)
     # set new query universe for year-month combination
     query["query"]["query_string"]["query"] = universe_query;
-    #print(query)
+    print(query)
     response = queryApi.get_filings(query)
     #print(response)
 
@@ -67,13 +67,14 @@ def get_10k_URLS_for_particular_company(start, end,ticker):
       # and ignore all other data. 
       # the URL is set in the dict key "linkToFilingDetails"
     urls_list = list(map(lambda x: x["linkToFilingDetails"], response["filings"]))
+    #print(urls_list[-1])
 
       # transform list of URLs into one string by joining all list elements
       # and add a new-line character between each element.
-    urls_string = "\n".join(urls_list) + "\n"
-    print(urls_string)
+    #urls_string = "\n".join(urls_list) + "\n"
+    #print(urls_string)
       
-    log_file.write(urls_string)
+    log_file.write(urls_list[-1]+"\n")
 
 
 
@@ -82,7 +83,7 @@ def get_10k_URLS_for_particular_company(start, end,ticker):
 
 
 
-get_10k_URLS_for_particular_company(2000,1990,"AAPL")
+get_10k_URLS_for_particular_company(2020,2018,"TSLA")
 
 import os
 import multiprocessing
