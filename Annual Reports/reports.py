@@ -34,22 +34,19 @@ def get_urls_for_ticker(base_query, ticker, start_year, end_year):
     print('Starting {year}'.format(year = year))
     universe_query = "ticker:{ticker} AND ".format(ticker = ticker) + \
       "filedAt:[{year}-01-01 TO {year}-12-31] AND ".format(year = year) + \
-      "formType:\"10-K\"" 
-        
-    # print(universe_query)
+      "formType:\"10-K\""  
     base_query["query"]["query_string"]["query"] = universe_query
-    print(base_query)
     response = queryapi.get_filings(base_query)
-    # print(response)
     urls_list = list(map(lambda x: x["linkToFilingDetails"], response["filings"]))
-    # print(urls_string)
+    print(urls_list)
+    if (len(urls_list) == 0):
+      print("No annual report for {year}! Breaking out of function -> assuming IPO was in {year}".format(year = year))
+      break
     log_file.write(urls_list[-1] + "\n")
     print("Filing URLs downloaded for {year}-01".format(year=year))
   log_file.close()
 
-# Testing function
 
-get_urls_for_ticker(base_query, "TSLA", 2020, 2022)
 
 ''' 
 1 - Business
@@ -83,3 +80,11 @@ def get_section(path, item):
       section_text = extractorApi.get_section(url, item, "text")
       output_file.write(section_text + "\n\n\n")
     output_file.close()
+
+# Testing above function 
+
+# Getting just the 10ks for TSLA from the year 2022 to 2000
+
+# get_urls_for_ticker(base_query, 'TSLA', 2000, 2022)
+
+get_section('./TSLA.txt', '7')
