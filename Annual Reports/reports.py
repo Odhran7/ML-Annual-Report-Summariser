@@ -20,7 +20,7 @@ def get_10k_URLS_for_particular_company(start, end,ticker):
   "size": "10",
   "sort": [{ "filedAt": { "order": "desc" } }]
 }
-  log_file = open("{ticker}_urls.txt".format(ticker=ticker), "a")
+  log_file = open('./urls/{ticker}_urls.txt'.format(ticker = ticker), 'a')
   
 
 
@@ -59,7 +59,7 @@ def get_10k_URLS_for_particular_company(start, end,ticker):
 
 
 
-#get_10k_URLS_for_particular_company(2022,2000,"AAPL")
+#get_10k_URLS_for_particular_company(2022,2000,"MCD")
 
 
 

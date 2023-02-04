@@ -1,4 +1,0 @@
-PyMuPDF
-smjsindustry
-bs4
-lxml
