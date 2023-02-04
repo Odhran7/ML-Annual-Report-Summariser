@@ -4,3 +4,4 @@ lxml
 BeautifulSoup
 fitz
 sec-api
+nltk
