@@ -27,7 +27,7 @@ def get_section(path, item):
       output_file.write(new_text + "\n\n\n")
     output_file.close()
 
-#get_section('AAPL_urls.txt', '7')
+#get_section('NFLX_urls.txt', '7')
 
 
 def get_sections_for_companies(company_tickers,item):
@@ -56,4 +56,4 @@ def remove_stopwords_and_tokenize(path):
 
   #filtered_text = [[word for word in line if word not in stop_words]for line in lines]
 
-remove_stopwords_and_tokenize('AAPL__7.txt')
+remove_stopwords_and_tokenize('NFLX__7.txt')

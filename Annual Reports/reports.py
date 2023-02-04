@@ -1,11 +1,14 @@
 # Download 10ks to local machine 
 
-from sandp500_tickers import save_sp500_tickers
-from sec_api import QueryApi
-import json 
 
+from sec_api import QueryApi
+
+
+
+
+api_key = "b8113d497aa775cb50186f7f03c97c7e8b3158734705787264d31e7f627dc6db"
 def get_10k_URLS_for_particular_company(start, end,ticker):
-  api_key = "b8113d497aa775cb50186f7f03c97c7e8b3158734705787264d31e7f627dc6db"
+  
   queryApi = QueryApi(api_key)
   query = {
   "query": { "query_string": { 
@@ -17,12 +20,12 @@ def get_10k_URLS_for_particular_company(start, end,ticker):
   "size": "10",
   "sort": [{ "filedAt": { "order": "desc" } }]
 }
-  log_file = open("filing_urls.txt", "a")
+  log_file = open("{ticker}_urls.txt".format(ticker=ticker), "a")
   
 
 
   for year in range(start, end, -1):
-    print("starting {year}".format(year=year))
+    #print("starting {year}".format(year=year))
   
   
     universe_query = "ticker:{ticker} AND ".format(ticker = ticker)+\
@@ -44,7 +47,9 @@ def get_10k_URLS_for_particular_company(start, end,ticker):
       
     urls_list = list(map(lambda x: x["linkToFilingDetails"], response["filings"]))
     
-      
+    if(len(urls_list)==0):
+      print("No annual report for {year}, breaking out ".format(year = year))
+      break  
     log_file.write(urls_list[-1]+"\n")
 
 
@@ -54,16 +59,15 @@ def get_10k_URLS_for_particular_company(start, end,ticker):
 
 
 
-get_10k_URLS_for_particular_company(2022,2000,"TSLA")
+#get_10k_URLS_for_particular_company(2022,2000,"AAPL")
 
 
 
-def get_section(path, item): 
-    file = open(path, 'r')
-    lines = file.readlines()
-    output_file = open(path[:-3] + "_{item}.txt".format(item = item), 'a')
-    for url in lines:
-      print(url)
-      section_text = extractorApi.get_section(url, item, "text")
-      output_file.write(section_text + "\n\n\n")
-    output_file.close()
+ 
+
+
+
+  
+
+
+#preprocess_textfile('./TSLA_urls.txt')
