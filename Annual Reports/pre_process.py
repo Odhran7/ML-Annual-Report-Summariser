@@ -29,29 +29,30 @@ extractorApi = ExtractorApi(api_key)
 13 - Certain Relationships and Related Transactions, and Director Independence
 14 - Principal Accountant Fees and Services
 '''
+
+# Defining an array with all the parts relevant to summarisation
+
+annual_report_items = ['1', '1A', '1B', '2', '3', '4', '5', '7', '7A', '9', '9A', '9B', '10', '11', '12', '13', '14']
+
 # Getting the clean-text of an item (see above) for the list of urls in a .txt file located at path ad preprocesses it by applying lowercase
 # and removes the HTML tags, punctuation, and tables located in the text file
 
-def get_section(path, item): 
-    file = open(path, 'r', encoding='utf-8')
-    lines = file.readlines()
-    output_file = open(path[:-4] + "_{item}.txt".format(item = item), 'a')
-    for url in lines:
-      print(url)
-      
+def get_text(path, list_items):
+  file = open(path, 'r', encoding = 'utf-8')
+  lines = file.readlines()
+  output_file = open('./content/' + path[7:-8] + ".txt", 'a', encoding = 'utf-8')
+  for url in lines:
+    print(url)
+    for item in list_items:
+      print("Adding item:{item} to .txt file".format(item = item))
       section_text = extractorApi.get_section(url, item, "text").lower()
-      
       soup = BeautifulSoup(section_text, "html.parser")
       section_text_without_html = soup.get_text()
       translator = str.maketrans('', '', string.punctuation)
       section_text_without_html = section_text_without_html.translate(translator)
       new_text = re.sub(r'tablestart.*?tableend', '', section_text_without_html, flags=re.DOTALL)
-      
-      
       output_file.write(new_text + "\n\n\n")
-    output_file.close()
-
-# Apostrophes not gone 
+  output_file.close()
 
 # get_section('./TSLA.txt', '7')
 
