@@ -21,8 +21,10 @@ extractorApi = ExtractorApi(api_key)
 # Note: Running this will download all available annual reports from the ticker list: S&P500
 # Will also do some minor text pre-processing 
 
-for ticker in tickers:
-    get_urls_for_ticker(base_query, ticker, 2000, 2022)
-    path = './urls/' + ticker + '_urls.txt'
-    get_text(path, annual_report_items)
+def run():
+    for ticker in tickers:
+        get_urls_for_ticker(base_query, ticker, 2000, 2022)
+        path = './urls/' + ticker + '_urls.txt'
+        get_text(path, annual_report_items)
 
+# run()
