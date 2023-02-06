@@ -18,6 +18,8 @@ queryapi = QueryApi(api_key)
 extractorApi = ExtractorApi(api_key)
 
 # Getting all annual reports for s and p 500
+# Note: Running this will download all available annual reports from the ticker list: S&P500
+# Will also do some minor text pre-processing 
 
 for ticker in tickers:
     get_urls_for_ticker(base_query, ticker, 2000, 2022)
