@@ -5,3 +5,5 @@ BeautifulSoup
 fitz
 sec-api
 nltk
+torch torchvision torchaudio
+transformers
