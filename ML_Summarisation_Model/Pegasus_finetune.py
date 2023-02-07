@@ -102,6 +102,7 @@ if __name__=='__main__':
   from datasets import load_dataset
   dataset = load_dataset("xsum")
   train_texts, train_labels = dataset['train']['document'][:1000], dataset['train']['summary'][:1000]
+  print(dataset)
   # use Pegasus Large model as base for fine-tuning
   # model_name = 'google/pegasus-large'
  # train_dataset, _, _, tokenizer = prepare_data(model_name, train_texts, train_labels)
