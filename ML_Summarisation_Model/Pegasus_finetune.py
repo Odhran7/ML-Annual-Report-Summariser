@@ -96,17 +96,17 @@ def prepare_fine_tuning(model_name, tokenizer, train_dataset, val_dataset=None, 
 
   return trainer
 
-
-if __name__=='__main__':
-  # use XSum dataset as example, with first 1000 docs as training data
-  from datasets import load_dataset
-  dataset = load_dataset("xsum")
-  train_texts, train_labels = dataset['train']['document'][:1000], dataset['train']['summary'][:1000]
-  print(dataset)
-  # use Pegasus Large model as base for fine-tuning
-  # model_name = 'google/pegasus-large'
- # train_dataset, _, _, tokenizer = prepare_data(model_name, train_texts, train_labels)
- # trainer = prepare_fine_tuning(model_name, tokenizer, train_dataset)
- # trainer.train()
+def train():
+    # use XSum dataset as example, with first 1000 docs as training data
+    from datasets import load_dataset
+    dataset = load_dataset("xsum")
+    train_texts, train_labels = dataset['train']['document'][:1000], dataset['train']['summary'][:1000]
+    print(dataset)
+    # use Pegasus Large model as base for fine-tuning
+    model_name = 'google/pegasus-large'
+    train_dataset, _, _, tokenizer = prepare_data(model_name, train_texts, train_labels)
+    trainer = prepare_fine_tuning(model_name, tokenizer, train_dataset)
+    trainer.train()
+    return trainer
 
 
