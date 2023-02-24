@@ -2,6 +2,8 @@
 import bs4 as bs
 import requests
 
+# Returns a list of the S & P 500 tickers in an array called tickers using web scraping from a Wikipedia website 
+
 def save_sp500_tickers():
     resp = requests.get('http://en.wikipedia.org/wiki/List_of_S%26P_500_companies')
     soup = bs.BeautifulSoup(resp.text, 'lxml')

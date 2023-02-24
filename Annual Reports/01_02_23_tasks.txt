@@ -1,2 +1,0 @@
-Read the documentation 
-Implement the methods in the previous day's tasks correctly and test them 

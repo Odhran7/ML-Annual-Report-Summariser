@@ -1,5 +1,5 @@
 from pre_process import remove_stopwords_and_tokenize, annual_report_items, get_text
-from reports import base_query, get_urls_for_ticker
+from report_url_writer import base_query, get_urls_for_ticker
 from sandp500_tickers import save_sp500_tickers
 from sec_api import QueryApi
 from sec_api import ExtractorApi

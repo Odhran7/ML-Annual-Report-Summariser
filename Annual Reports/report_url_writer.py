@@ -26,7 +26,7 @@ base_query = {
   "sort": [{ "filedAt": { "order": "desc" } }]
 }
 
-# This function writes 10k filing urls   for ticker = ticker to ticker.txt from start_year to end_year
+# This function writes 10k filing urls for ticker = ticker to ticker.txt from start_year to end_year
 
 def get_urls_for_ticker(base_query, ticker, start_year, end_year):
   log_file = open('./urls/{ticker}_urls.txt'.format(ticker = ticker), 'a')

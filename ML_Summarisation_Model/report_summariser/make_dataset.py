@@ -1,6 +1,8 @@
 import os
 from datasets import Dataset
 
+# This function creates a Hugging Face dataset with cols id, document, summary whereby summaries are the labels. It returns the train/test subsets @ 0.8. It only does this for the first 10 annual reports
+
 def load_data():
     train_data = []
     label_summaries = []
@@ -31,15 +33,18 @@ def load_data():
     
         # Only appends the first 100 characters
 
-            label_summaries.append(document[:100])
+            label_summaries.append(summary[:100])
 
     # Converts train array and label array to HuggingFace dataset object 
 
     dataset = Dataset.from_dict({"doc":train_data,"sum":label_summaries})
 
+    # Converts dataset into train and test subsets using train size of 0.8. Ideally, we would have a validation set
+
     dataset_train_test = dataset.train_test_split(train_size=0.8,)
+
+    # Returns the split dataset object
     
     return dataset_train_test
 
-# Prints the HuggingFace object
 

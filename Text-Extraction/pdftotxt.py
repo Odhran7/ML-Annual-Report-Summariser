@@ -1,34 +1,18 @@
 import fitz 
 
-path = './APPL.pdf'
+# This converts PDFs to .txt files
 
-pdf = fitz.open(path)
-text = ""
-text_file = open('AAPL.txt', 'w', encoding="utf-8")
-
-for page in pdf:
-    try:
-        text = page.get_text()
-        text_file.write(text) 
-        print(text)
-    except IOError as error:
-        print(error)
-
-text_file.close()
-
-# Write function to give paths
-
-# Write function here to convert pdf to text -> 
+# Write function here to convert pdf to text given input file and writes to output file
 
 def convert_pdf_txt(path, output):
     pdf = fitz.open(path)
     text = ""
-    output_file = open('', 'a', encoding = 'utf-8') # Need to define ticker
+    output_file = open('', 'a', encoding = 'utf-8')
     for page in pdf:
         try:
             text = page.get_text()
             output_file.writw(text)
         except IOError:
-            print(error)
+            print(IOError)
     output_file.close()
 
