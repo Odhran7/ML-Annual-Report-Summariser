@@ -1,8 +1,9 @@
 import os
 from datasets import Dataset
+import pandas as pd 
 
 # This function creates a Hugging Face dataset with cols id, document, summary whereby summaries are the labels. It returns the train/test subsets @ 0.8. It only does this for the first 10 annual reports
-
+'''
 def load_data():
     train_data = []
     label_summaries = []
@@ -48,3 +49,10 @@ def load_data():
     return dataset_train_test
 
 
+'''
+
+def read_csv(path):
+    df = pd.read_csv(path, header=None)
+    print(df.tail)
+
+read_csv("ML_Summarisation_Model/Training/Summaries/Item 1A - Risk Factors/A/A_Item_1A_Document_Summary - Sheet1.csv")
