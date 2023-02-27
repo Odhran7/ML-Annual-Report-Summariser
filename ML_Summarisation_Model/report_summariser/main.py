@@ -1,4 +1,4 @@
-from make_dataset import load_data
+from dataset_creator import load_data
 from finetuned_model import train, test, summarise, test_compete
 from compete_model import summarise_compete
 

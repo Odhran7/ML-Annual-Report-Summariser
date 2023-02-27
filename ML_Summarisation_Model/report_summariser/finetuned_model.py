@@ -1,11 +1,9 @@
 from transformers import PegasusForConditionalGeneration, PegasusTokenizer, Trainer, TrainingArguments, AutoTokenizer
 import torch
-from report_summariser import load_data
 from rouge_calculator import calculate_metric_on_test_ds
 import pandas as pd
 from datasets import load_metric
 from transformers import pipeline 
-
 
 # This class is used to fine tune a pre-existing model. We are going to apply this to the pre-trained Pegasus model - in particular the Pegasus Large model
 
