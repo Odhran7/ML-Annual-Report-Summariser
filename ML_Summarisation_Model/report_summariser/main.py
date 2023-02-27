@@ -1,4 +1,4 @@
-from dataset_creator import load_data
+
 from finetuned_model import train, test, summarise, test_compete
 from compete_model import summarise_compete
 
@@ -25,5 +25,5 @@ summarise_compete(document_compete)
 
 # Calculate the metrics on the compete model
 
-test_compete()
+#test_compete()
 

@@ -4,7 +4,9 @@ from rouge_calculator import calculate_metric_on_test_ds
 import pandas as pd
 from datasets import load_metric
 from transformers import pipeline 
+from dataset_creator import load_data
 
+pathToTrainingDirectory = "ML_Summarisation_Model\Training\Summaries\Item 1A - Risk Factors\A"
 # This class is used to fine tune a pre-existing model. We are going to apply this to the pre-trained Pegasus model - in particular the Pegasus Large model
 
 class PegasusDataset(torch.utils.data.Dataset):
@@ -107,7 +109,7 @@ def train():
 
   # This loads our custom function used to create a train/test dataset using excerpts and labelled summaries as the datatypes
 
-    dataset = load_data()
+    dataset = load_data(pathToTrainingDirectory)
 
   # Splits the data into the train excerpts and the summaries from the preloaded dataeset 
 
