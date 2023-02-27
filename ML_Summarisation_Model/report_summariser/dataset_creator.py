@@ -25,7 +25,8 @@ def load_data(directory):
     dataset = Dataset.from_dict(data_dict)
     dataset = dataset.train_test_split(train_size=0.9)
     return dataset
-#data = load_data("ML_Summarisation_Model\Training\Summaries\Item 1A - Risk Factors\A")
+data = load_data("ML_Summarisation_Model\Training\Summaries\Item 1A - Risk Factors\A")
+print(data)
 
 
 '''
