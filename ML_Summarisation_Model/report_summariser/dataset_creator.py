@@ -1,8 +1,6 @@
 import pandas as pd 
 from datasets import Dataset
 import os 
-import pandas as pd
-from datasets import Dataset
 
 def load_data(directory):
     data_dict = {"id": [], "document": [], "summary": []}
